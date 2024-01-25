@@ -1,5 +1,15 @@
 package ru.skypro.homework.dto;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
-    USER, ADMIN
+    USER("Пользователь"),
+    ADMIN("Администратор");
+
+    private final String role;
+
+    Role(String role) {
+        this.role = role;
+    }
 }
