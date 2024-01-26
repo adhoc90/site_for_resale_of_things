@@ -13,5 +13,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/ads")
 @Tag(name = "Объявления")
-public class AdsController {
+public class AdvertisementController {
 }
