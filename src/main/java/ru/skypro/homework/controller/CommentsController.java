@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(value = "http://localhost:3000")
+@RequestMapping("/ads")
 @Slf4j
-@RequestMapping("/users")
-@Tag(name = "Пользователи")
-public class UserController {
+@Tag(name = "Комментарии")
+public class CommentsController {
 }

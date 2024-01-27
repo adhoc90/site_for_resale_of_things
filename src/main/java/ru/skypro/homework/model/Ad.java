@@ -1,24 +1,27 @@
 package ru.skypro.homework.model;
 
-//import lombok.Data;
-//import lombok.EqualsAndHashCode;
-//
 //import javax.persistence.Entity;
 //import javax.persistence.GeneratedValue;
 //import javax.persistence.GenerationType;
 //import javax.persistence.Id;
 //
-//@Entity(name = "images")
+//@Entity(name = "advert")
 //@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 //@Data
-//public class Image {
+//public class Advert {
 //
 //    @Id
 //    @EqualsAndHashCode.Include
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private int id;
+//    private int pk;
 //
-//    private byte[] avatar;
-//
-//
+//    private int price;
+//    private int author;
+//    private String authorFirstName;
+//    private String authorLastName;
+//    private String title;
+//    private String description;
+//    private String email;
+//    private String phone;
+//    private String image;
 //}
