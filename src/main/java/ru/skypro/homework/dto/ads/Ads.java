@@ -1,7 +1,8 @@
 package ru.skypro.homework.dto.ads;
 
-import ru.skypro.homework.dto.ads.Ad;
+import lombok.Data;
 
+@Data
 public class Ads {
 
     private Integer count;
