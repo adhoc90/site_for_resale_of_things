@@ -19,12 +19,12 @@ import ru.skypro.homework.dto.users.User;
 @Slf4j
 @RequestMapping("/users")
 @Tag(name = "Пользователи")
-public class UsersController {
+public class UserController {
 
 
     @PostMapping("/set_password")
     @Operation(summary = "Обновление пароля")
-    public ResponseEntity<Void> setPassword(@RequestBody() NewPassword newPassword) {
+    public ResponseEntity<Void> setPassword(@RequestBody NewPassword newPassword) {
         return ResponseEntity.status(HttpStatus.OK).build(); // тут будет вызван метод сервиса, который вернет соответствующий статус (200, 401, 403)
     }
 
@@ -38,7 +38,7 @@ public class UsersController {
 
     @PatchMapping("/me")
     @Operation(summary = "Обновление информации об авторизованном пользователе")
-    public ResponseEntity<UpdateUser> updateUser(@RequestBody() UpdateUser updateUser) {
+    public ResponseEntity<UpdateUser> updateUser(@RequestBody UpdateUser updateUser) {
         UpdateUser user = new UpdateUser();
 //        здесь будет метод сервиса, который вернёт статус обновлённого пользователя
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -46,7 +46,7 @@ public class UsersController {
 
     @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Обновление аватара авторизованного пользователя")
-    public ResponseEntity<Void> updateImage(@RequestBody() MultipartFile multipartFile) {
+    public ResponseEntity<Void> updateImage(@RequestBody MultipartFile multipartFile) {
         HttpStatus httpStatus = HttpStatus.OK; // тут будет метод вызванный с сервиса который вернет соответствующий статус (200, 401)
         return ResponseEntity.status(httpStatus).build();
     }
