@@ -24,29 +24,33 @@ public class UserController {
 
     @PostMapping("/set_password")
     @Operation(summary = "Обновление пароля")
-    public ResponseEntity<Void> setPassword(@RequestBody NewPassword newPassword) {
+    public ResponseEntity<Void> setPassword(@RequestBody(required = false) NewPassword newPassword) {
         return ResponseEntity.status(HttpStatus.OK).build(); // тут будет вызван метод сервиса, который вернет соответствующий статус (200, 401, 403)
     }
 
     @GetMapping("/me")
     @Operation(summary = "Получение информации об авторизованном пользователе")
-    public ResponseEntity<User> getUser(@RequestParam("userId") Integer userId) {
+    public ResponseEntity<User> getUser() {
         User user = new User();
 //        здесь будет метод сервиса, который проверяет авторизован пользователь или нет и вернёт соответствующий статус
-        return ResponseEntity.status(HttpStatus.OK).build();
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(user);
     }
 
     @PatchMapping("/me")
     @Operation(summary = "Обновление информации об авторизованном пользователе")
-    public ResponseEntity<UpdateUser> updateUser(@RequestBody UpdateUser updateUser) {
+    public ResponseEntity<UpdateUser> updateUser(@RequestBody(required = false) UpdateUser updateUser) {
         UpdateUser user = new UpdateUser();
 //        здесь будет метод сервиса, который вернёт статус обновлённого пользователя
-        return ResponseEntity.status(HttpStatus.OK).build();
+        if (user == null) ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        return ResponseEntity.ok(user);
     }
 
     @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Обновление аватара авторизованного пользователя")
-    public ResponseEntity<Void> updateImage(@RequestBody MultipartFile multipartFile) {
+    public ResponseEntity<Void> updateImage(@RequestBody(required = false) MultipartFile multipartFile) {
         HttpStatus httpStatus = HttpStatus.OK; // тут будет метод вызванный с сервиса который вернет соответствующий статус (200, 401)
         return ResponseEntity.status(httpStatus).build();
     }

@@ -46,8 +46,8 @@ public class CommentController {
 
     @DeleteMapping("{adId}/comments/{commentId}")
     @Operation(summary = "Удаление комментария")
-    public ResponseEntity<Comment> deleteComment(@PathVariable("adId") String adId,
-                                                 @PathVariable("commentId") String commentId) {
+    public ResponseEntity<Void> deleteComment(@PathVariable("adId") String adId,
+                                              @PathVariable("commentId") String commentId) {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
