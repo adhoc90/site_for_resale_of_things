@@ -7,9 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.comments.Comment;
-import ru.skypro.homework.dto.comments.Comments;
-import ru.skypro.homework.dto.comments.CreateOrUpdateComment;
+import ru.skypro.homework.dto.comments.CommentDto;
+import ru.skypro.homework.dto.comments.CommentsDto;
+import ru.skypro.homework.dto.comments.CreateOrUpdateCommentDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +21,8 @@ public class CommentController {
 
     @GetMapping("{id}/comments")
     @Operation(summary = "Получение комментариев объявления")
-    public ResponseEntity<Comments> getComment(@PathVariable("id") Integer id) {
-        Comments comments = new Comments();
+    public ResponseEntity<CommentsDto> getComment(@PathVariable("id") Integer id) {
+        CommentsDto comments = new CommentsDto();
         if (comments.getCount() == -1) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else if (comments.getCount() == 0) {
@@ -33,9 +33,9 @@ public class CommentController {
 
     @PostMapping("{id}/comments")
     @Operation(summary = "Добавление комментария к объявлению")
-    public ResponseEntity<Comment> addCommentToAd(@PathVariable("id") Integer id,
-                                                  @RequestBody(required = false) CreateOrUpdateComment text) {
-        Comment comment = new Comment();
+    public ResponseEntity<CommentDto> addCommentToAd(@PathVariable("id") Integer id,
+                                                     @RequestBody(required = false) CreateOrUpdateCommentDto text) {
+        CommentDto comment = new CommentDto();
         if (comment.getPk() == -1) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else if (comment == null) {
@@ -53,10 +53,10 @@ public class CommentController {
 
     @PatchMapping("{adId}/comments/{commentId}")
     @Operation(summary = "Обновление комментария")
-    public ResponseEntity<Comment> updateComment(@PathVariable("adId") Integer adId,
-                                                 @PathVariable("commentId") Integer commentId,
-                                                 @RequestBody(required = false) CreateOrUpdateComment newComment) {
-        Comment comment = new Comment();
+    public ResponseEntity<CommentDto> updateComment(@PathVariable("adId") Integer adId,
+                                                    @PathVariable("commentId") Integer commentId,
+                                                    @RequestBody(required = false) CreateOrUpdateCommentDto newComment) {
+        CommentDto comment = new CommentDto();
         if (comment.getPk() == -1) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else if (comment.getPk() == -2) {

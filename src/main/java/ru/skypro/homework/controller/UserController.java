@@ -9,9 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.users.NewPassword;
-import ru.skypro.homework.dto.users.UpdateUser;
-import ru.skypro.homework.dto.users.User;
+import ru.skypro.homework.dto.users.NewPasswordDto;
+import ru.skypro.homework.dto.users.UpdateUserDto;
+import ru.skypro.homework.dto.users.UserDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,14 +24,14 @@ public class UserController {
 
     @PostMapping("/set_password")
     @Operation(summary = "Обновление пароля")
-    public ResponseEntity<Void> setPassword(@RequestBody(required = false) NewPassword newPassword) {
+    public ResponseEntity<Void> setPassword(@RequestBody(required = false) NewPasswordDto newPassword) {
         return ResponseEntity.status(HttpStatus.OK).build(); // тут будет вызван метод сервиса, который вернет соответствующий статус (200, 401, 403)
     }
 
     @GetMapping("/me")
     @Operation(summary = "Получение информации об авторизованном пользователе")
-    public ResponseEntity<User> getUser() {
-        User user = new User();
+    public ResponseEntity<UserDto> getUser() {
+        UserDto user = new UserDto();
 //        здесь будет метод сервиса, который проверяет авторизован пользователь или нет и вернёт соответствующий статус
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -41,8 +41,8 @@ public class UserController {
 
     @PatchMapping("/me")
     @Operation(summary = "Обновление информации об авторизованном пользователе")
-    public ResponseEntity<UpdateUser> updateUser(@RequestBody(required = false) UpdateUser updateUser) {
-        UpdateUser user = new UpdateUser();
+    public ResponseEntity<UpdateUserDto> updateUser(@RequestBody(required = false) UpdateUserDto updateUser) {
+        UpdateUserDto user = new UpdateUserDto();
 //        здесь будет метод сервиса, который вернёт статус обновлённого пользователя
         if (user == null) ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         return ResponseEntity.ok(user);

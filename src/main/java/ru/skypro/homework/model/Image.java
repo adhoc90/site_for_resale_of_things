@@ -1,5 +1,5 @@
-package ru.skypro.homework.model;
-
+//package ru.skypro.homework.model;
+//
 //import lombok.Data;
 //import lombok.EqualsAndHashCode;
 //
