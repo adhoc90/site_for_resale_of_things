@@ -1,29 +1,28 @@
 package ru.skypro.homework.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
-@Entity(name = "ad")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+
+@Entity(name = "ads")
+@NoArgsConstructor
 @Data
+
 public class Ad {
     @Id
-    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int pk;
-
-    private int price;
-    private int author;
-    private String authorFirstName;
-    private String authorLastName;
+    @Column(name = "id")
+    private Integer pk;
+    private Integer price;
     private String title;
     private String description;
-    private String email;
-    private String phone;
     private String image;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

@@ -25,27 +25,28 @@ public class UserController {
     @PostMapping("/set_password")
     @Operation(summary = "Обновление пароля")
     public ResponseEntity<Void> setPassword(@RequestBody(required = false) NewPasswordDto newPassword) {
+
         return ResponseEntity.status(HttpStatus.OK).build(); // тут будет вызван метод сервиса, который вернет соответствующий статус (200, 401, 403)
     }
 
     @GetMapping("/me")
     @Operation(summary = "Получение информации об авторизованном пользователе")
     public ResponseEntity<UserDto> getUser() {
-        UserDto user = new UserDto();
+//        UserDto user = new UserDto();
 //        здесь будет метод сервиса, который проверяет авторизован пользователь или нет и вернёт соответствующий статус
-        if (user == null) {
+//        if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.ok(user);
-    }
+//        return ResponseEntity.ok(user);
+//    }
 
     @PatchMapping("/me")
     @Operation(summary = "Обновление информации об авторизованном пользователе")
     public ResponseEntity<UpdateUserDto> updateUser(@RequestBody(required = false) UpdateUserDto updateUser) {
-        UpdateUserDto user = new UpdateUserDto();
+//        UpdateUserDto user = new UpdateUserDto();
 //        здесь будет метод сервиса, который вернёт статус обновлённого пользователя
-        if (user == null) ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        return ResponseEntity.ok(user);
+//        if (user == null) ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

@@ -1,27 +1,21 @@
 package ru.skypro.homework.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "comments")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
 @Data
 public class Comment {
-
     @Id
-    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int pk;
-
-    private int author;
-    private int createdAt;
+    @Column(name = "id")
+    private Integer pk;
+    private Integer createdAt;
     private String text;
-    private String authorImage;
-    private String authorFirstName;
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
