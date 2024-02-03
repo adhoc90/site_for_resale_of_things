@@ -1,18 +1,14 @@
 package ru.skypro.homework.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 
 @Entity(name = "ads")
 @NoArgsConstructor
 @Data
-
 public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

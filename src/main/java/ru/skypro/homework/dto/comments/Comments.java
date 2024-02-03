@@ -3,8 +3,8 @@ package ru.skypro.homework.dto.comments;
 import lombok.Data;
 
 @Data
-public class CommentsDto {
+public class Comments {
 
     private Integer count;
-    private CommentDto results;
+    private Comment results;
 }

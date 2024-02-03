@@ -3,7 +3,7 @@ package ru.skypro.homework.dto.comments;
 import lombok.Data;
 
 @Data
-public class CommentDto {
+public class Comment {
 
     private Integer author;
     private String authorImage;

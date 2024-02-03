@@ -15,7 +15,6 @@ import static javax.persistence.EnumType.STRING;
 @NoArgsConstructor
 @Data
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
