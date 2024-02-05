@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.skypro.homework.model.User;
 
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 

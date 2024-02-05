@@ -10,12 +10,13 @@ public interface CommentMapper {
 
     @Mapping(source = "author", target = "user.id")
     @Mapping(source = "authorImage", target = "user.image")
-    @Mapping(source = "authorFirstName", target = "user.FirstName")
+    @Mapping(source = "authorFirstName", target = "user.firstName")
     Comment toModelComment(ru.skypro.homework.dto.comments.Comment dto);
+
     @Mapping(source = "user.id", target = "author")
     @Mapping(source = "user.image", target = "authorImage")
     @Mapping(source = "user.firstName", target = "authorFirstName")
-    ru.skypro.homework.dto.comments.Comment toCommentDto(Comment comment, User user);
+    ru.skypro.homework.dto.comments.Comment toCommentDto(User user, Comment comment);
 
     Comment toModelComment(ru.skypro.homework.dto.comments.Comments dto);
     ru.skypro.homework.dto.comments.Comments toCommentsDto(Comment comment);
