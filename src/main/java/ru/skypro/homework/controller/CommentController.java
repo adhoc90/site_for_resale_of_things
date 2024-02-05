@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.comments.Comment;
 import ru.skypro.homework.dto.comments.Comments;
 import ru.skypro.homework.dto.comments.CreateOrUpdateComment;
+import ru.skypro.homework.mapper.CommentMapper;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,27 +22,31 @@ import ru.skypro.homework.dto.comments.CreateOrUpdateComment;
 @Tag(name = "Комментарии")
 public class CommentController {
 
-    @GetMapping("{id}/comments")
+//    private final CommentMapper commentMapper;
+
+    @GetMapping(value = "{id}/comments", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение комментариев объявления")
     public ResponseEntity<Comments> getComment(@PathVariable("id") Integer id) {
         Comments comments = new Comments();
-        if (comments.getCount() == -1) {
+        int stub = 10; /*заглушка*/
+        if (stub > 10) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } else if (comments.getCount() == 0) {
+        } else if (stub < 10) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(comments);
     }
 
-    @PostMapping("{id}/comments")
+    @PostMapping(value = "{id}/comments", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Добавление комментария к объявлению")
     public ResponseEntity<Comment> addCommentToAd(@PathVariable("id") Integer id,
                                                   @RequestBody(required = false) CreateOrUpdateComment text) {
         Comment comment = new Comment();
-        if (comment.getPk() == -1) {
+        int stub = 10; /*заглушка*/
+        if (stub > 10) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } else if (comment == null) {
-            return ResponseEntity.notFound().build();
+        } else if (stub < 10) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(comment);
     }
@@ -48,22 +55,31 @@ public class CommentController {
     @Operation(summary = "Удаление комментария")
     public ResponseEntity<Void> deleteComment(@PathVariable("adId") String adId,
                                               @PathVariable("commentId") String commentId) {
+        int stub = 10; /*заглушка*/
+        if (stub > 10) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } else if (stub < 10 && stub > 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else if (stub <= 0) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PatchMapping("{adId}/comments/{commentId}")
+    @PatchMapping(value = "{adId}/comments/{commentId}", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Обновление комментария")
     public ResponseEntity<Comment> updateComment(@PathVariable("adId") Integer adId,
                                                  @PathVariable("commentId") Integer commentId,
                                                  @RequestBody(required = false) CreateOrUpdateComment newComment) {
         Comment comment = new Comment();
-        if (comment.getPk() == -1) {
+        int stub = 10;
+        if (stub > 10) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } else if (comment.getPk() == -2) {
+        } else if (stub < 10 && stub > 0) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        } else if (comment == null) {
-            return ResponseEntity.notFound().build();
+        } else if (stub <= 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok(comment);
     }
 }
