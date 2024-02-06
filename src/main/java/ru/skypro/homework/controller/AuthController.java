@@ -26,12 +26,12 @@ public class AuthController {
     @PostMapping("/login")
     @Operation(summary = "Авторизация")
     public ResponseEntity<?> login(@RequestBody(required = false) Login login) {
-        log.info("поступил запрос на вход от пользователя " + login.getUserName());
+        log.info("поступил запрос на вход от пользователя " + login.getUsername());
         if (authService.login(SAMPLE.toModelUser(login).getEmail(), SAMPLE.toModelUser(login).getPassword())) {
-            log.info("пользователь " + login.getUserName() + " вошел успешно");
+            log.info("пользователь " + login.getUsername() + " вошел успешно");
             return ResponseEntity.ok().build();
         } else {
-            log.info("пользователь " + login.getUserName() + " не авторизован");
+            log.info("пользователь " + login.getUsername() + " не авторизован");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }

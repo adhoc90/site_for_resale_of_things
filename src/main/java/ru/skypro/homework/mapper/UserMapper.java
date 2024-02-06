@@ -20,15 +20,15 @@ public interface UserMapper {
     ru.skypro.homework.dto.users.UpdateUser toDtoUpdateUser(User user);
 
 
-    @Mapping(source = "userName", target = "email")
+    @Mapping(source = "username", target = "email")
     User toModelUser(ru.skypro.homework.dto.users.Login dto);
-    @Mapping(source = "email", target = "userName")
+    @Mapping(source = "email", target = "username")
     ru.skypro.homework.dto.users.Login toDtoLogin(User user);
 
 
-    @Mapping(source = "userName", target = "email")
+    @Mapping(source = "username", target = "email")
     User toModelUser(ru.skypro.homework.dto.users.Register dto);
-    @Mapping(source = "email", target = "userName")
+    @Mapping(source = "email", target = "username")
     ru.skypro.homework.dto.users.Register toDtoRegister(User user);
 
 

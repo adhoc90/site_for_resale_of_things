@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AuthService;
 
+import java.io.ObjectOutputStream;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -19,15 +21,18 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder encoder;
     private final UserRepository userRepository;
 
-
     @Override
     public boolean login(String userName, String password) {
+        log.info("Зарегистрированный пользователь пытается войти");
         if (userRepository.findUserByEmail(userName).isEmpty()) {
-            log.info("Такого пользователя не найдено");
+            log.info("Такой пользователь отсутствует");
             return false;
         }
-        UserDetails userDetails = manager.loadUserByUsername(userName);
-        return encoder.matches(password, userDetails.getPassword());
+
+        log.info("userName исправен 1");
+//        UserDetails userDetails = manager.loadUserByUsername(userName);
+        log.info("userName исправен 2");
+        return encoder.matches(password, userRepository.findUserByEmail(userName).get().getPassword());
     }
 
 
@@ -37,14 +42,45 @@ public class AuthServiceImpl implements AuthService {
             log.info("Такой пользователь существует");
             return false;
         }
-        manager.createUser(
-                User.builder()
-                        .passwordEncoder(this.encoder::encode)
-                        .password(user.getPassword())
-                        .username(user.getEmail())
-                        .roles(user.getRole().name())
-                        .build());
-        userRepository.save(user);
+        String password = encoder.encode(user.getPassword());
+        log.info("user почта {} ", user.getEmail());
+        log.info("user role {} ", user.getRole());
+
+        user.setPassword(password);
+        ru.skypro.homework.model.User savedUser = userRepository.save(user);
+        userRepository.save(savedUser);
+
         return true;
     }
 }
+
+
+//    @Override
+//    public boolean login(String userName, String password) {
+//        if (userRepository.findUserByEmail(userName).isEmpty()) {
+//            log.info("Такого пользователя не найдено");
+//            return false;
+//        }
+//        UserDetails userDetails = manager.loadUserByUsername(userName);
+//        return encoder.matches(password, userDetails.getPassword());
+//    }
+
+
+//    @Override
+//    public boolean register(ru.skypro.homework.model.User user) {
+//        if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
+//            log.info("Такой пользователь существует");
+//            return false;
+//        }
+//        log.info("Начало создания пользователя {}", user.getPassword());
+//        manager.createUser(
+//                User.builder()
+//                        .passwordEncoder(this.encoder::encode)
+//                        .password(user.getPassword())
+//                        .username(user.getEmail())
+//                        .roles(user.getRole().name())
+//                        .build());
+//        userRepository.save(user);
+//        return true;
+//    }
+

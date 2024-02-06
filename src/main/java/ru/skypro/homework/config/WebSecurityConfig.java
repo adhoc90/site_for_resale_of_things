@@ -25,17 +25,6 @@ public class WebSecurityConfig {
             "/register"
     };
 
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails user =
-                User.builder()
-                        .username("user@gmail.com")
-                        .password("password")
-                        .passwordEncoder(passwordEncoder::encode)
-                        .roles(Role.USER.name())
-                        .build();
-        return new InMemoryUserDetailsManager(user);
-    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,5 +46,17 @@ public class WebSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
+        String encodedPassword = passwordEncoder.encode("password");
+        UserDetails user =
+                User.builder()
+                        .username("user@gmail.com")
+                        .password(encodedPassword)
+                        .roles(Role.USER.name())
+                        .build();
+        return new InMemoryUserDetailsManager(user);
     }
 }
