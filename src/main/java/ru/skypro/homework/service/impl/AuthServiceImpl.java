@@ -2,15 +2,11 @@ package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AuthService;
-
-import java.io.ObjectOutputStream;
 
 @Service
 @Slf4j
@@ -48,8 +44,6 @@ public class AuthServiceImpl implements AuthService {
 
         user.setPassword(password);
         ru.skypro.homework.model.User savedUser = userRepository.save(user);
-        userRepository.save(savedUser);
-
         return true;
     }
 }
