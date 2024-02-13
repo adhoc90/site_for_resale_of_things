@@ -22,9 +22,13 @@ public class User {
     private String lastName;
     private String phone;
     private String email;
+
     @Enumerated(STRING)
     private Role role;
-    private String image;
+
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -33,8 +37,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-//    @OneToOne(mappedBy = "user")
-//    private Authentication authentication;
 
     @Override
     public boolean equals(Object o) {
