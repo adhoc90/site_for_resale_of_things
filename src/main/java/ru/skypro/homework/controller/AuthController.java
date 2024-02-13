@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.skypro.homework.dto.users.Login;
-import ru.skypro.homework.dto.users.Register;
+import ru.skypro.homework.dto.users.LoginDto;
+import ru.skypro.homework.dto.users.RegisterDto;
 import ru.skypro.homework.service.AuthService;
 
 import static ru.skypro.homework.mapper.UserMapper.SAMPLE;
@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "Авторизация")
-    public ResponseEntity<?> login(@RequestBody(required = false) Login login) {
+    public ResponseEntity<?> login(@RequestBody(required = false) LoginDto login) {
         log.info("поступил запрос на вход от пользователя " + login.getUsername());
         if (authService.login(SAMPLE.toModelUser(login).getEmail(), SAMPLE.toModelUser(login).getPassword())) {
             log.info("пользователь " + login.getUsername() + " вошел успешно");
@@ -38,7 +38,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @Operation(summary = "Регистрация")
-    public ResponseEntity<?> register(@RequestBody(required = false) Register register) {
+    public ResponseEntity<?> register(@RequestBody(required = false) RegisterDto register) {
         log.info("поступил запрос на регистрацию");
         if (authService.register(SAMPLE.toModelUser(register))) {
             log.info("регистрация прошла успешно");

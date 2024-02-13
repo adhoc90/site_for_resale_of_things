@@ -5,16 +5,16 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.skypro.homework.dto.users.User;
+import ru.skypro.homework.dto.users.UserDto;
 
 import java.util.Collection;
 import java.util.List;
-
+/** для определения получения доступа к странице в зависимости от РОЛИ **/
 @Data
 @AllArgsConstructor
 public class AuthUserDetails implements UserDetails {
 
-    ru.skypro.homework.dto.users.User user = new User();
+    UserDto user = new UserDto();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

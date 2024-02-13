@@ -7,10 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.comments.Comment;
-import ru.skypro.homework.dto.comments.Comments;
-import ru.skypro.homework.dto.comments.CreateOrUpdateComment;
-import ru.skypro.homework.mapper.CommentMapper;
+import ru.skypro.homework.dto.comments.CommentDto;
+import ru.skypro.homework.dto.comments.CommentsDto;
+import ru.skypro.homework.dto.comments.CreateOrUpdateCommentDto;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -26,8 +25,8 @@ public class CommentController {
 
     @GetMapping(value = "{id}/comments", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение комментариев объявления")
-    public ResponseEntity<Comments> getComment(@PathVariable("id") Integer id) {
-        Comments comments = new Comments();
+    public ResponseEntity<CommentsDto> getComment(@PathVariable("id") Integer id) {
+        CommentsDto comments = new CommentsDto();
         int stub = 10; /*заглушка*/
         if (stub > 10) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -39,9 +38,9 @@ public class CommentController {
 
     @PostMapping(value = "{id}/comments", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Добавление комментария к объявлению")
-    public ResponseEntity<Comment> addCommentToAd(@PathVariable("id") Integer id,
-                                                  @RequestBody(required = false) CreateOrUpdateComment text) {
-        Comment comment = new Comment();
+    public ResponseEntity<CommentDto> addCommentToAd(@PathVariable("id") Integer id,
+                                                     @RequestBody(required = false) CreateOrUpdateCommentDto text) {
+        CommentDto comment = new CommentDto();
         int stub = 10; /*заглушка*/
         if (stub > 10) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -68,10 +67,10 @@ public class CommentController {
 
     @PatchMapping(value = "{adId}/comments/{commentId}", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Обновление комментария")
-    public ResponseEntity<Comment> updateComment(@PathVariable("adId") Integer adId,
-                                                 @PathVariable("commentId") Integer commentId,
-                                                 @RequestBody(required = false) CreateOrUpdateComment newComment) {
-        Comment comment = new Comment();
+    public ResponseEntity<CommentDto> updateComment(@PathVariable("adId") Integer adId,
+                                                    @PathVariable("commentId") Integer commentId,
+                                                    @RequestBody(required = false) CreateOrUpdateCommentDto newComment) {
+        CommentDto comment = new CommentDto();
         int stub = 10;
         if (stub > 10) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

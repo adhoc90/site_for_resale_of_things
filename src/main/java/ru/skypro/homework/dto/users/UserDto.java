@@ -4,7 +4,7 @@ import lombok.Data;
 import ru.skypro.homework.enums.Role;
 
 @Data
-public class User {
+public class UserDto {
 
     private Integer id;
     private String email;

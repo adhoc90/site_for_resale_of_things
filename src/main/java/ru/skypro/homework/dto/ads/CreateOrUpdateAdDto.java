@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.Size;
 
 @Data
-public class CreateOrUpdateAd {
+public class CreateOrUpdateAdDto {
 
     @Size(min = 4, max = 32)
     private String title;

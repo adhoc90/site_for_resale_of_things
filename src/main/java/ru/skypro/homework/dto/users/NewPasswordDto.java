@@ -5,10 +5,10 @@ import lombok.Data;
 import javax.validation.constraints.Size;
 
 @Data
-public class Login {
+public class NewPasswordDto {
 
     @Size(min = 8, max = 16)
-    private String password;
-    @Size(min = 4, max = 32)
-    private String username;
+    private String currentPassword;
+    @Size(min = 8, max = 16)
+    private String newPassword;
 }

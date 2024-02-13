@@ -2,6 +2,7 @@ package ru.skypro.homework.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import ru.skypro.homework.enums.Role;
+
+import javax.validation.constraints.NotNull;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -47,16 +50,24 @@ public class WebSecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
-        String encodedPassword = passwordEncoder.encode("password");
-        UserDetails user =
-                User.builder()
-                        .username("user@gmail.com")
-                        .password(encodedPassword)
-                        .roles(Role.USER.name())
-                        .build();
-        return new InMemoryUserDetailsManager(user);
-    }
 }
+
+//    @Override
+//    public void configure(AuthenticationManagerBuilder builder)
+//            throws Exception {
+//        builder.userDetailsService(userDetailsService);
+//    }
+//}
+
+//    @Bean
+//    public InMemoryUserDetailsManager userDetailsService(@NotNull PasswordEncoder passwordEncoder) {
+//        String encodedPassword = passwordEncoder.encode("password");
+//        UserDetails user =
+//                User.builder()
+//                        .username("user@gmail.com")
+//                        .password(encodedPassword)
+//                        .roles(Role.USER.name())
+//                        .build();
+//        return new InMemoryUserDetailsManager(user);
+
+//}

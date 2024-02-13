@@ -3,6 +3,7 @@ package ru.skypro.homework.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import ru.skypro.homework.dto.users.*;
 import ru.skypro.homework.model.User;
 
 
@@ -12,28 +13,28 @@ public interface UserMapper {
     UserMapper SAMPLE = Mappers.getMapper(UserMapper.class);
 
 
-    User toModelUser(ru.skypro.homework.dto.users.User dto);
-    ru.skypro.homework.dto.users.User toDtoUser(User user);
+    User toModelUser(UserDto dto);
+    UserDto toDtoUser(User user);
 
 
-    User toModelUser(ru.skypro.homework.dto.users.UpdateUser dto);
-    ru.skypro.homework.dto.users.UpdateUser toDtoUpdateUser(User user);
-
-
-    @Mapping(source = "username", target = "email")
-    User toModelUser(ru.skypro.homework.dto.users.Login dto);
-    @Mapping(source = "email", target = "username")
-    ru.skypro.homework.dto.users.Login toDtoLogin(User user);
+    User toModelUser(UpdateUserDto dto);
+    UpdateUserDto toDtoUpdateUser(User user);
 
 
     @Mapping(source = "username", target = "email")
-    User toModelUser(ru.skypro.homework.dto.users.Register dto);
+    User toModelUser(LoginDto dto);
     @Mapping(source = "email", target = "username")
-    ru.skypro.homework.dto.users.Register toDtoRegister(User user);
+    LoginDto toDtoLogin(User user);
+
+
+    @Mapping(source = "username", target = "email")
+    User toModelUser(RegisterDto dto);
+    @Mapping(source = "email", target = "username")
+    RegisterDto toDtoRegister(User user);
 
 
     @Mapping(source = "currentPassword", target = "password")
-    User toModelUser(ru.skypro.homework.dto.users.NewPassword dto);
+    User toModelUser(NewPasswordDto dto);
     @Mapping(source = "password", target = "currentPassword")
-    ru.skypro.homework.dto.users.NewPassword toDtoNewPassword(User user);
+    NewPasswordDto toDtoNewPassword(User user);
 }

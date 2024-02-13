@@ -9,10 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.ads.Ad;
-import ru.skypro.homework.dto.ads.Ads;
-import ru.skypro.homework.dto.ads.CreateOrUpdateAd;
-import ru.skypro.homework.dto.ads.ExtendedAd;
+import ru.skypro.homework.dto.ads.AdDto;
+import ru.skypro.homework.dto.ads.AdsDto;
+import ru.skypro.homework.dto.ads.CreateOrUpdateAdDto;
+import ru.skypro.homework.dto.ads.ExtendedAdDto;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -26,15 +26,15 @@ public class AdController {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение всех объявлений")
-    public ResponseEntity<Ads> getAllAds() {
-        Ads ads = new Ads(); // тут будет метод вызванный с сервиса который возвращает лист всех объявлений
+    public ResponseEntity<AdsDto> getAllAds() {
+        AdsDto ads = new AdsDto(); // тут будет метод вызванный с сервиса который возвращает лист всех объявлений
         return ResponseEntity.ok(ads);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Добавление объявления")
-    public ResponseEntity<CreateOrUpdateAd> addAd(@RequestBody(required = false) CreateOrUpdateAd properties,
-                                                  @RequestParam(name = "image") MultipartFile image) {
+    public ResponseEntity<CreateOrUpdateAdDto> addAd(@RequestBody(required = false) CreateOrUpdateAdDto properties,
+                                                     @RequestParam(name = "image") MultipartFile image) {
         // метод сервиса на добавление объявления
         int stub = 10;
         if (stub >= 10) {
@@ -45,10 +45,10 @@ public class AdController {
 
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение информации об объявлении")
-    public ResponseEntity<ExtendedAd> getInfoAd(@PathVariable Integer id) {
+    public ResponseEntity<ExtendedAdDto> getInfoAd(@PathVariable Integer id) {
 
         int stub = 10;
-        ExtendedAd extendedAd = new ExtendedAd();
+        ExtendedAdDto extendedAd = new ExtendedAdDto();
         if (stub < 10) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else if (stub > 10) {
@@ -74,9 +74,9 @@ public class AdController {
 
     @PatchMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Обновление информации об объявлении")
-    public ResponseEntity<Ad> updateInfoAd(@PathVariable Integer id,
-                                           @RequestBody(required = false) CreateOrUpdateAd createOrUpdateAd) {
-        Ad stubObj = new Ad(); /*объект-заглушка*/
+    public ResponseEntity<AdDto> updateInfoAd(@PathVariable Integer id,
+                                              @RequestBody(required = false) CreateOrUpdateAdDto createOrUpdateAd) {
+        AdDto stubObj = new AdDto(); /*объект-заглушка*/
         int stub = 10; /*заглушка*/
         if (stub > 10) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -90,9 +90,9 @@ public class AdController {
 
     @GetMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение объявлений авторизованного пользователя")
-    public ResponseEntity<Ads> getAds() {
+    public ResponseEntity<AdsDto> getAds() {
         int stub = 10;
-        Ads ads = new Ads();
+        AdsDto ads = new AdsDto();
         if (stub < 10) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
