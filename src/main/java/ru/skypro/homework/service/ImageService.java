@@ -1,13 +1,16 @@
 package ru.skypro.homework.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.model.Image;
+import ru.skypro.homework.model.ImageModel;
 
 public interface ImageService {
 
-    Image saveMultipartFile(MultipartFile multipartFile);
+    @Transactional
+    ImageModel saveMultipartFile(MultipartFile multipartFile);
 
-    Image save(Image image);
+    @Transactional
+    ImageModel save(ImageModel image);
 
     byte[] getImageByPath(String path);
 }

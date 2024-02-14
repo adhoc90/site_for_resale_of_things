@@ -12,7 +12,7 @@ import java.util.Objects;
 @Entity(name = "images")
 @NoArgsConstructor
 @Data
-public class Image {
+public class ImageModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +23,8 @@ public class Image {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Image)) return false;
-        Image image = (Image) o;
+        if (!(o instanceof ImageModel)) return false;
+        ImageModel image = (ImageModel) o;
         return Objects.equals(path, image.path);
     }
 

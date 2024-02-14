@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.model.Image;
+import ru.skypro.homework.model.ImageModel;
 import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.service.ImageService;
 
@@ -20,9 +20,9 @@ public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
 
     @Override
-    public Image saveMultipartFile(MultipartFile multipartFile) {
+    public ImageModel saveMultipartFile(MultipartFile multipartFile) {
         log.info("Сохраняем и возвращаем изображение");
-        Image image = new Image();
+        ImageModel image = new ImageModel();
         if (multipartFile != null && !multipartFile.isEmpty()) {
             String savedFilePath = fileStorageService.saveFile(multipartFile);
             image.setPath(savedFilePath);
@@ -33,7 +33,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image save(Image image) {
+    public ImageModel save(ImageModel image) {
         log.info("Сохраняем и возвращаем картинку");
         return imageRepository.save(image);
     }

@@ -1,35 +1,35 @@
 package ru.skypro.homework.mapper;
 
+import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import ru.skypro.homework.dto.ads.AdDto;
 import ru.skypro.homework.dto.ads.AdsDto;
 import ru.skypro.homework.dto.ads.CreateOrUpdateAdDto;
 import ru.skypro.homework.dto.ads.ExtendedAdDto;
-import ru.skypro.homework.model.Ad;
-import ru.skypro.homework.model.User;
+import ru.skypro.homework.model.AdModel;
 
+@Mapper(componentModel = "spring")
 public interface AdMapper {
 
     AdMapper SAMPLE = Mappers.getMapper(AdMapper.class);
 
 
-    @Mapping(source = "author", target = "user.id")
-    Ad toModelAd(AdDto dto);
+    @Mapping(source = "image.path", target = "image")
     @Mapping(source = "user.id", target = "author")
-    AdDto toDtoAd(Ad ad, User user);
+    AdDto toDtoAd(AdModel ad);
 
-    Ad toModelAd(AdsDto dto);
-    AdsDto toDtoAds(Ad ad);
+    AdModel toModelAd(AdsDto dto);
+    AdsDto toDtoAds(AdModel ad);
 
-    Ad toModelAd(CreateOrUpdateAdDto dto);
-    CreateOrUpdateAdDto toDtoCreateOrUpdateAd(Ad ad);
+    AdModel toModelAd(CreateOrUpdateAdDto dto);
+    CreateOrUpdateAdDto toDtoCreateOrUpdateAd(AdModel ad);
 
 
-    @Mapping(source = "authorFirstName", target = "user.firstName")
-    @Mapping(source = "authorLastName", target = "user.lastName")
-    Ad toModelAd(ExtendedAdDto dto);
     @Mapping(source = "user.firstName", target = "authorFirstName")
     @Mapping(source = "user.lastName", target = "authorLastName")
-    ExtendedAdDto toDtoExtendedAd(Ad ad, User user);
+    @Mapping(source = "user.email", target = "email")
+    @Mapping(source = "image.path", target = "image")
+    @Mapping(source = "user.phone", target = "phone")
+    ExtendedAdDto toDtoExtendedAd(AdModel ad);
 }

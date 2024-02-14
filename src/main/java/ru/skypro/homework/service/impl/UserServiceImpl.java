@@ -6,12 +6,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.users.NewPasswordDto;
 import ru.skypro.homework.dto.users.UpdateUserDto;
 import ru.skypro.homework.dto.users.UserDto;
-import ru.skypro.homework.model.Image;
-import ru.skypro.homework.model.User;
+import ru.skypro.homework.model.ImageModel;
+import ru.skypro.homework.model.UserModel;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
@@ -30,9 +31,10 @@ public class UserServiceImpl implements UserService {
     private final ImageService imageService;
 
     @Override
+    @Transactional
     public boolean setPassword(NewPasswordDto passwordDto, Authentication authentication) {
         log.info("Запрос на изменение пароля");
-        User user;
+        UserModel user;
         try {
             user = userRepository.findUserByEmail(authentication.getName())
                     .orElseThrow(() -> new UsernameNotFoundException("Пользователь не зарегистрирован"));
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserInformation(Authentication authentication) {
         log.info("Запрос на получение информации пользователя");
-        User user;
+        UserModel user;
         try {
             user = userRepository.findUserByEmail(authentication.getName())
                     .orElseThrow(() -> new UsernameNotFoundException("Пользователь не зарегистрирован"));
@@ -60,9 +62,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UpdateUserDto updateUserInfo(UpdateUserDto updateUserDto, Authentication authentication) {
         log.info("Запрос на обновление информации об пользователе");
-        User user;
+        UserModel user;
         try {
             user = userRepository.findUserByEmail(authentication.getName())
                     .orElseThrow(() -> new UsernameNotFoundException("Пользователь не зарегистрирован"));
@@ -78,9 +81,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public String updateUserImage(MultipartFile multipartFile, Authentication authentication) {
         log.info("Запрос на обновление автара");
-        User user;
+        UserModel user;
         try {
             user = userRepository.findUserByEmail(authentication.getName())
                     .orElseThrow(() -> new UsernameNotFoundException("Пользователь не зарегистрирован"));
@@ -89,17 +93,24 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         String newImage = fileStorageService.saveFile(multipartFile);
-        Image image;
+        ImageModel image;
         if (user.getImage() != null) {
             log.info("аватарка у пользователя была");
             image = user.getImage();
             fileStorageService.deleteFile(image.getPath());
         } else {
             log.info("аватарки у пользователя не было");
-            image = new Image();
+            image = new ImageModel();
             user.setImage(image);
         }
         image.setPath(newImage);
         return imageService.save(image).getPath();
+    }
+
+    @Override
+    @Transactional
+    public UserModel findUserByEmail(String email) {
+        log.info("Находим и возвращаем пользователя по email {}", email);
+        return userRepository.findUserByEmail(email).orElse(null);
     }
 }

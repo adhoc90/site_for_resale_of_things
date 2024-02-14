@@ -9,7 +9,10 @@ import ru.skypro.homework.dto.users.UserDto;
 
 import java.util.Collection;
 import java.util.List;
-/** для определения получения доступа к странице в зависимости от РОЛИ **/
+
+/**
+ * для определения получения доступа к странице в зависимости от РОЛИ
+ **/
 @Data
 @AllArgsConstructor
 public class AuthUserDetails implements UserDetails {

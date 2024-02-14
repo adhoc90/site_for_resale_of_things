@@ -14,7 +14,7 @@ import static javax.persistence.EnumType.STRING;
 @Entity(name = "users")
 @NoArgsConstructor
 @Data
-public class User {
+public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -28,21 +28,21 @@ public class User {
 
     @OneToOne
     @JoinColumn(name = "image_id")
-    private Image image;
+    private ImageModel image;
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Ad> ads;
+    private List<AdModel> ads;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
+    private List<CommentModel> comments;
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
+        UserModel user = (UserModel) o;
         return Objects.equals(email, user.email);
     }
 

@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.model.User;
+import ru.skypro.homework.model.UserModel;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.security.SecurityDetailsService;
 import ru.skypro.homework.service.AuthService;
@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public boolean register(ru.skypro.homework.model.User user) {
+    public boolean register(UserModel user) {
         if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
             log.info("Такой пользователь существует");
             return false;
@@ -43,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
         log.info("user role {} ", user.getRole());
 
         user.setPassword(password);
-        User savedUser = userRepository.save(user);
+        UserModel savedUser = userRepository.save(user);
         return true;
     }
 }

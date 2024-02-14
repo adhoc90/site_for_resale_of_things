@@ -8,8 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.repository.UserRepository;
 
-import java.util.Optional;
-
 @Service
 public class SecurityDetailsService implements UserDetailsService {
 

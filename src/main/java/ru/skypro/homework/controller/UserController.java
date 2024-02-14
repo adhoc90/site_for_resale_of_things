@@ -16,6 +16,7 @@ import ru.skypro.homework.dto.users.NewPasswordDto;
 import ru.skypro.homework.dto.users.UpdateUserDto;
 import ru.skypro.homework.dto.users.UserDto;
 import ru.skypro.homework.mapper.UserMapper;
+import ru.skypro.homework.model.UserModel;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.impl.FileStorageServiceImpl;
 
@@ -45,7 +46,7 @@ public class UserController {
             if (loggedInUserName == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
-            ru.skypro.homework.model.User user = userRepository.findUserByEmail(loggedInUserName)
+            UserModel user = userRepository.findUserByEmail(loggedInUserName)
                     .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
 
             if (newPassword == null || StringUtils.isEmpty(newPassword.getNewPassword())) {
@@ -69,7 +70,7 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
 
-            ru.skypro.homework.model.User user = userRepository.findUserByEmail(loggedInUserName)
+            UserModel user = userRepository.findUserByEmail(loggedInUserName)
                     .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
 
             UserDto userDto = userMapper.toDtoUser(user);
@@ -92,7 +93,7 @@ public class UserController {
             userRepository.findUserByEmail(loggedInUserName)
                     .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
 
-            ru.skypro.homework.model.User user;
+            UserModel user;
             user = userMapper.toModelUser(userDto);
             user = userRepository.save(user);
             UpdateUserDto updateUserDto = userMapper.toDtoUpdateUser(user);

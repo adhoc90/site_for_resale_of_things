@@ -3,6 +3,7 @@ package ru.skypro.homework.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.service.FileStorageService;
@@ -45,6 +46,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
+    @Transactional
     public void deleteFile(String filePath) {
         log.info("Пробуем удалить старую картинку {}", filePath);
         try {
@@ -55,18 +57,21 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
     }
 
+
+    @Override
+    @Transactional
     public String saveFile(MultipartFile file) {
+        log.info("Пробуем сохранить изображение в проекте и вернуть ссылку в папке");
         try {
             String fileName = generateFileName(file);
-            Path filePath = Paths.get(uploadDir + File.separator + fileName);
+            Path filePath = Paths.get(uploadDir, fileName);
             File targetFile = filePath.toFile();
-            targetFile.getParentFile().mkdirs();
             try (FileOutputStream fos = new FileOutputStream(targetFile)) {
                 fos.write(file.getBytes());
             }
-            return targetFile.getAbsolutePath();
+            return Paths.get(fileName).toString().replace(File.separator, "/");
         } catch (IOException e) {
-            throw new RuntimeException("Failed to save file", e);
+            throw new RuntimeException("Не получилось сохранить файл", e);
         }
     }
 
