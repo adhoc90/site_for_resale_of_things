@@ -69,8 +69,7 @@ public class CommentController {
      * @return ответ с кодом состояния в зависимости от результата удаления.
      */
     @DeleteMapping(value = "/{adId}/comments/{commentId}")
-    @PreAuthorize(value = "hasRole('ADMIN') or @commentServiceImpl.isAuthorComment(authentication.getName(), #commentId)")
-    @Operation(summary = "Удаление комментария")
+    @PreAuthorize(value = "hasRole('ADMIN') or @commentServiceImpl.isAuthorComment(authentication.getName(), #commentId)")    @Operation(summary = "Удаление комментария")
     public ResponseEntity<Void> deleteAdComment(@PathVariable("adId") Integer adId,
                                                 @PathVariable("commentId") Integer commentId,
                                                 Authentication authentication) {

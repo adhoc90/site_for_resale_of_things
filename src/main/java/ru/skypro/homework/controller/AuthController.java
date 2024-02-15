@@ -39,8 +39,8 @@ public class AuthController {
     @PostMapping("/register")
     @Operation(summary = "Регистрация")
     public ResponseEntity<?> register(@RequestBody(required = false) RegisterDto register) {
-        log.info("поступил запрос на регистрацию");
-        if (authService.register(SAMPLE.toModelUser(register))) {
+        log.info("поступил запрос на регистрацию {} ", register.getUsername());
+        if (authService.register(register)) {
             log.info("регистрация прошла успешно");
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } else {
