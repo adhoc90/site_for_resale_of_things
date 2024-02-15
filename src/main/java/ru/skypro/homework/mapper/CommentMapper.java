@@ -2,28 +2,31 @@ package ru.skypro.homework.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
-import ru.skypro.homework.model.Comment;
-import ru.skypro.homework.model.User;
+import ru.skypro.homework.dto.comments.CommentDto;
+import ru.skypro.homework.dto.comments.CommentsDto;
+import ru.skypro.homework.dto.comments.CreateOrUpdateCommentDto;
+import ru.skypro.homework.model.CommentModel;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface CommentMapper {
 
-    CommentMapper SAMPLE = Mappers.getMapper(CommentMapper.class);
+//    CommentMapper SAMPLE = Mappers.getMapper(CommentMapper.class);
 
+    @Mapping(source = "authorImage", target = "user.image.path")
     @Mapping(source = "author", target = "user.id")
-    @Mapping(source = "authorImage", target = "user.image")
     @Mapping(source = "authorFirstName", target = "user.firstName")
-    Comment toModelComment(ru.skypro.homework.dto.comments.Comment dto);
+    CommentModel toModelComment(CommentDto dto);
 
+    @Mapping(source = "user.image.path", target = "authorImage")
     @Mapping(source = "user.id", target = "author")
-    @Mapping(source = "user.image", target = "authorImage")
     @Mapping(source = "user.firstName", target = "authorFirstName")
-    ru.skypro.homework.dto.comments.Comment toCommentDto(User user, Comment comment);
+    CommentDto toDtoComment(CommentModel comment);
 
-    Comment toModelComment(ru.skypro.homework.dto.comments.Comments dto);
-    ru.skypro.homework.dto.comments.Comments toCommentsDto(Comment comment);
+    CommentModel toModelComment(CommentsDto dto);
 
-    Comment toModelComment(ru.skypro.homework.dto.comments.CreateOrUpdateComment dto);
-    ru.skypro.homework.dto.comments.CreateOrUpdateComment toCreateOrUpdateComment(Comment comment);
+    CommentsDto toCommentsDto(CommentModel comment);
+
+    CommentModel toModelComment(CreateOrUpdateCommentDto dto);
+
+    CreateOrUpdateCommentDto toCreateOrUpdateComment(CommentModel comment);
 }

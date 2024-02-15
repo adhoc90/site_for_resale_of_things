@@ -5,16 +5,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.ads.Ad;
-import ru.skypro.homework.dto.ads.Ads;
-import ru.skypro.homework.dto.ads.CreateOrUpdateAd;
-import ru.skypro.homework.dto.ads.ExtendedAd;
+import ru.skypro.homework.dto.ads.AdDto;
+import ru.skypro.homework.dto.ads.AdsDto;
+import ru.skypro.homework.dto.ads.CreateOrUpdateAdDto;
+import ru.skypro.homework.dto.ads.ExtendedAdDto;
+import ru.skypro.homework.service.AdService;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.*;
 
 @RestController
 @Slf4j
@@ -24,98 +26,122 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Tag(name = "Объявления")
 public class AdController {
 
+    private final AdService adService;
+
+    /**
+     * Получение всех объявлений.
+     *
+     * @return ResponseEntity содержит список всех объявлений.
+     */
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение всех объявлений")
-    public ResponseEntity<Ads> getAllAds() {
-        Ads ads = new Ads(); // тут будет метод вызванный с сервиса который возвращает лист всех объявлений
-        return ResponseEntity.ok(ads);
+    public ResponseEntity<AdsDto> getAllAds() {
+        log.info("Отправляем запрос в сервис для получения всех объявлений");
+        return ResponseEntity.ok(adService.getAllAds());
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
+    /**
+     * Создание нового объявления.
+     *
+     * @param properties     Параметры нового объявления.
+     * @param image          Картинка объявления.
+     * @param authentication Данные авторизации пользователя.
+     * @return ResponseEntity содержит новое объявление или код статуса ответа при неудаче (
+     * HttpStatus.UNPROCESSABLE_ENTITY).
+     */
+    @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Добавление объявления")
-    public ResponseEntity<CreateOrUpdateAd> addAd(@RequestBody(required = false) CreateOrUpdateAd properties,
-                                                  @RequestParam(name = "image") MultipartFile image) {
-        // метод сервиса на добавление объявления
-        int stub = 10;
-        if (stub >= 10) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(properties);
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    public ResponseEntity<CreateOrUpdateAdDto> createAd(@RequestPart CreateOrUpdateAdDto properties,
+                                                        @RequestPart("image") MultipartFile image,
+                                                        Authentication authentication) {
+        log.info("Отправляем параметры в сервис для создания объявления пользователя {}", authentication.getName());
+        CreateOrUpdateAdDto adDTO = adService.createAd(properties, image, authentication.getName());
+        return adDTO != null ?
+                ResponseEntity.status(HttpStatus.CREATED).body(adDTO) :
+                ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
     }
 
+    /**
+     * Получение расширенной информации объявления.
+     *
+     * @param id Идентификатор объявления.
+     * @return ResponseEntity содержит расширенный набор параметров объявления.
+     */
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение информации об объявлении")
-    public ResponseEntity<ExtendedAd> getInfoAd(@PathVariable Integer id) {
-
-        int stub = 10;
-        ExtendedAd extendedAd = new ExtendedAd();
-        if (stub < 10) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } else if (stub > 10) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.ok(extendedAd);
+    public ResponseEntity<ExtendedAdDto> getAdInfo(@PathVariable("id") Integer id) {
+        log.info("Отправляем параметры в сервис для получения информации объявления {}", id);
+        return adService.getAdInfo(id) != null ?
+                ResponseEntity.ok(adService.getAdInfo(id)) :
+                ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
+    /**
+     * Удаление объявления.
+     *
+     * @param id Идентификатор удаляемого объявления.
+     * @return ResponseEntity содержит код статуса ответа (
+     * HttpStatus.NO_CONTENT при успешном удалении, HttpStatus.NOT_FOUND при неудачном удалении).
+     */
+    @DeleteMapping(value = "/{id}")
+    @PreAuthorize(value = "hasRole('ADMIN') or @adServiceImpl.isAuthorAd(authentication.getName(), #id)")
     @Operation(summary = "Удаление объявления")
-    public ResponseEntity<Void> deleteAd(@PathVariable Integer id) {
-        int stub = 10;                 // будет метод сервиса который возвращает статус удаления объявления
-        if (stub > 10) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } else if (stub < 10 && stub > 0) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        } else if (stub <= 0) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public ResponseEntity<Void> deleteAd(@PathVariable("id") Integer id) {
+        log.info("Отправляем параметры в сервис для удаления объявления {}", id);
+        return adService.deleteAd(id) ?
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-
+    /**
+     * Обновление информации объявления.
+     *
+     * @param id               Идентификатор объявления.
+     * @param createOrUpdateAd Обновленная версия объявления.
+     * @return ResponseEntity содержит измененное объявление.
+     */
     @PatchMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @PreAuthorize(value = "hasRole('ADMIN') or @adServiceImpl.isAuthorAd(authentication.getName(), #id)")
     @Operation(summary = "Обновление информации об объявлении")
-    public ResponseEntity<Ad> updateInfoAd(@PathVariable Integer id,
-                                           @RequestBody(required = false) CreateOrUpdateAd createOrUpdateAd) {
-        Ad stubObj = new Ad(); /*объект-заглушка*/
-        int stub = 10; /*заглушка*/
-        if (stub > 10) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } else if (stub < 10 && stub > 0) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        } else if (stub <= 0) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.ok(stubObj);
+    public ResponseEntity<AdDto> updateAdInfo(@PathVariable("id") Integer id,
+                                              @RequestBody(required = false) CreateOrUpdateAdDto createOrUpdateAd) {
+        log.info("Отправляем параметры в сервис для обновления объявления {}", id);
+        AdDto adDTO = adService.updateAd(createOrUpdateAd, id);
+        return adDTO != null ?
+                ResponseEntity.ok(adDTO) :
+                ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    /**
+     * Получение объявлений авторизованного пользователя.
+     *
+     * @param authentication Данные авторизации пользователя.
+     * @return ResponseEntity содержит список объявлений пользователя.
+     */
     @GetMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение объявлений авторизованного пользователя")
-    public ResponseEntity<Ads> getAds() {
-        int stub = 10;
-        Ads ads = new Ads();
-        if (stub < 10) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        return ResponseEntity.ok(ads);
+    public ResponseEntity<AdsDto> getAuthUserAds(Authentication authentication) {
+        log.info("Отправляем параметры в сервис для получения объявлений пользователя {}", authentication.getName());
+        return ResponseEntity.ok(adService.getAuthUserAds(authentication.getName()));
     }
 
-    @PatchMapping(value = "/{id}/image",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = APPLICATION_JSON_VALUE)
+    /**
+     * Обновление картинки объявления.
+     *
+     * @param id    Идентификатор объявления, к которому относится картинка.
+     * @param image Новая картинка объявления.
+     * @return ResponseEntity содержит новую картинку объявления или код статуса ответа при неудаче (
+     * HttpStatus.NOT_FOUND).
+     */
+    @PatchMapping(value = "/{id}/image", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_OCTET_STREAM_VALUE)
+    @PreAuthorize(value = "hasRole('ADMIN') or @adServiceImpl.isAuthorAd(authentication.getName(), #id)")
     @Operation(summary = "Обновление картинки объявления")
-    public ResponseEntity<String[]> updateImageAd(@PathVariable Integer id,
-                                                  @RequestBody(required = false) MultipartFile multipartFile) {
-        int stub = 10;
-        String[] strings = new String[10]; // Если что-то не так, нулевой элемент массива будет содержать код ошибки. Пока тут заглушка
-        if (stub > 10) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        if (stub < 10) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        if (stub < 10 && stub >= 0) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.ok(strings);
+    public ResponseEntity<String> updateAdPhoto(@PathVariable("id") Integer id,
+                                                @RequestPart("image") MultipartFile image) {
+        log.info("Отправляем параметры в сервис для замены старой картинки объявления {}", id);
+        String newImage = adService.updateImage(id, image);
+        return newImage != null ?
+                ResponseEntity.ok(newImage) :
+                ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }

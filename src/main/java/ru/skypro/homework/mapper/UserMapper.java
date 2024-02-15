@@ -3,7 +3,8 @@ package ru.skypro.homework.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import ru.skypro.homework.model.User;
+import ru.skypro.homework.dto.users.*;
+import ru.skypro.homework.model.UserModel;
 
 
 @Mapper(componentModel = "spring")
@@ -12,28 +13,34 @@ public interface UserMapper {
     UserMapper SAMPLE = Mappers.getMapper(UserMapper.class);
 
 
-    User toModelUser(ru.skypro.homework.dto.users.User dto);
-    ru.skypro.homework.dto.users.User toDtoUser(User user);
+    @Mapping(source = "image", target = "image.path")
+    UserModel toModelUser(UserDto dto);
+    @Mapping(source = "image.path", target = "image")
+    UserDto toDtoUser(UserModel user);
 
 
-    User toModelUser(ru.skypro.homework.dto.users.UpdateUser dto);
-    ru.skypro.homework.dto.users.UpdateUser toDtoUpdateUser(User user);
+    UserModel toModelUser(UpdateUserDto dto);
 
-
-    @Mapping(source = "username", target = "email")
-    User toModelUser(ru.skypro.homework.dto.users.Login dto);
-    @Mapping(source = "email", target = "username")
-    ru.skypro.homework.dto.users.Login toDtoLogin(User user);
+    UpdateUserDto toDtoUpdateUser(UserModel user);
 
 
     @Mapping(source = "username", target = "email")
-    User toModelUser(ru.skypro.homework.dto.users.Register dto);
+    UserModel toModelUser(LoginDto dto);
+
     @Mapping(source = "email", target = "username")
-    ru.skypro.homework.dto.users.Register toDtoRegister(User user);
+    LoginDto toDtoLogin(UserModel user);
+
+
+    @Mapping(source = "username", target = "email")
+    UserModel toModelUser(RegisterDto dto);
+
+    @Mapping(source = "email", target = "username")
+    RegisterDto toDtoRegister(UserModel user);
 
 
     @Mapping(source = "currentPassword", target = "password")
-    User toModelUser(ru.skypro.homework.dto.users.NewPassword dto);
+    UserModel toModelUser(NewPasswordDto dto);
+
     @Mapping(source = "password", target = "currentPassword")
-    ru.skypro.homework.dto.users.NewPassword toDtoNewPassword(User user);
+    NewPasswordDto toDtoNewPassword(UserModel user);
 }

@@ -1,14 +1,27 @@
 package ru.skypro.homework.service;
 
-import ru.skypro.homework.dto.users.NewPassword;
-import ru.skypro.homework.dto.users.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.users.NewPasswordDto;
+import ru.skypro.homework.dto.users.UpdateUserDto;
+import ru.skypro.homework.dto.users.UserDto;
+import ru.skypro.homework.model.UserModel;
+
 
 public interface UserService {
 
-    NewPassword updatePassword();
+    @Transactional
+    boolean setPassword(NewPasswordDto passwordDto, Authentication authentication);
 
-    User getInfoAboutAuthorizedUser();
+    UserDto getUserInformation(Authentication authentication);
 
+    @Transactional
+    UpdateUserDto updateUserInfo(UpdateUserDto updateUserDto, Authentication authentication);
 
+    @Transactional
+    String updateUserImage(MultipartFile multipartFile, Authentication authentication);
 
+    @Transactional
+    UserModel findUserByEmail(String email);
 }
