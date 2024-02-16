@@ -130,8 +130,8 @@ public class AdController {
      *
      * @param id    Идентификатор объявления, к которому относится картинка.
      * @param image Новая картинка объявления.
-     * @return ResponseEntity содержит новую картинку объявления или код статуса ответа при неудаче (
-     * HttpStatus.NOT_FOUND).
+     * @return ResponseEntity содержит новую картинку объявления или код статуса ответа при неудаче
+     * (HttpStatus.NOT_FOUND).
      */
     @PatchMapping(value = "/{id}/image", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_OCTET_STREAM_VALUE)
     @PreAuthorize(value = "hasRole('ADMIN') or @adServiceImpl.isAuthorAd(authentication.getName(), #id)")

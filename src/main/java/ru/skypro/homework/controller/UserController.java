@@ -17,6 +17,9 @@ import ru.skypro.homework.service.UserService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * Контроллер для работы с пользователями.
+ */
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(value = "http://localhost:3000")
@@ -27,6 +30,13 @@ public class UserController {
 
     private final UserService userService;
 
+    /**
+     * Запрос на обновление пароля авторизованного пользователя
+     *
+     * @param newPassword    данные нового пароля
+     * @param authentication данные для аутентификации
+     * @return статс ответа в зависимости от результата изменения пароля
+     */
     @PostMapping("/set_password")
     @Operation(summary = "Обновление пароля")
     public ResponseEntity<String> setPassword(@RequestBody(required = false) NewPasswordDto newPassword,
@@ -44,6 +54,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+     * Запрос на получение информации о пользователе
+     *
+     * @param authentication аутентификация пользователя
+     * @return статус ответа
+     */
     @GetMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Получение информации об авторизованном пользователе")
     public ResponseEntity<UserDto> getUser(Authentication authentication) {
@@ -58,6 +74,13 @@ public class UserController {
     }
 
 
+    /**
+     * Запрос на конечную точку обновление информации пользователя
+     *
+     * @param userDto        данные пользователя
+     * @param authentication аутентификация пользователя
+     * @return статус ответа
+     */
     @PatchMapping(value = "/me", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Обновление информации об авторизованном пользователе")
     public ResponseEntity<UpdateUserDto> updateUser(@RequestBody(required = false) UpdateUserDto userDto,
@@ -72,6 +95,13 @@ public class UserController {
         return ResponseEntity.ok(newInfo);
     }
 
+    /**
+     * Запрос на обновление аватара авторизованного пользователя
+     *
+     * @param multipartFile  картинка пользователя
+     * @param authentication аутентификация
+     * @return статус ответа
+     */
     @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Обновление аватара авторизованного пользователя")
     public ResponseEntity<String> updateImage(@RequestBody(required = false) MultipartFile multipartFile,
