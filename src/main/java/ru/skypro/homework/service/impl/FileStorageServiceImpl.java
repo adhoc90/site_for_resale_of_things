@@ -3,7 +3,6 @@ package ru.skypro.homework.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.service.FileStorageService;
@@ -32,8 +31,8 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     @Override
     public byte[] getFileBytes(String filePath) {
-        log.info("Пробуем получить и вернуть массив байтов картинки {}", filePath);
-        Path path = Paths.get(uploadDir + "/images", filePath);
+        log.info("Пробуем получить и вернуть массив байтов картинки {}", filePath.getBytes());
+        Path path = Paths.get(uploadDir, filePath);
         if (Files.exists(path)) {
             try {
                 return Files.readAllBytes(path);
@@ -46,7 +45,6 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    @Transactional
     public void deleteFile(String filePath) {
         log.info("Пробуем удалить старую картинку {}", filePath);
         try {
@@ -59,7 +57,6 @@ public class FileStorageServiceImpl implements FileStorageService {
 
 
     @Override
-    @Transactional
     public String saveFile(MultipartFile file) {
         log.info("Пробуем сохранить изображение в проекте и вернуть ссылку в папке");
         try {
@@ -76,6 +73,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     private String generateFileName(MultipartFile file) {
+        System.out.println(file);
         String originalFileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         String fileExtension = getFileExtension(originalFileName);
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));

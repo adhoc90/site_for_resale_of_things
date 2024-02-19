@@ -1,6 +1,5 @@
 package ru.skypro.homework.service;
 
-import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.homework.dto.comments.CommentDto;
 import ru.skypro.homework.dto.comments.CommentsDto;
 import ru.skypro.homework.dto.comments.CreateOrUpdateCommentDto;
@@ -24,7 +23,6 @@ public interface CommentService {
      * @param email Email пользователя, создающего комментарий.
      * @return Созданный комментарий.
      */
-    @Transactional
     CommentDto createComment(CreateOrUpdateCommentDto text, Integer pk, String email);
 
     /**
@@ -34,7 +32,6 @@ public interface CommentService {
      * @param commentId Идентификатор удаляемого комментария.
      * @return true, если комментарий успешно удален, иначе false.
      */
-    @Transactional
     boolean deleteComment(Integer adId, Integer commentId);
 
     /**
@@ -46,6 +43,5 @@ public interface CommentService {
      * @param email     Email пользователя, обновляющего комментарий.
      * @return Обновленный комментарий.
      */
-    @Transactional
     CommentDto updateComment(CreateOrUpdateCommentDto text, Integer adId, Integer commentId, String email);
 }

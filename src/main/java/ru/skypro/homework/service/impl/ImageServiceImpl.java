@@ -8,11 +8,8 @@ import ru.skypro.homework.model.ImageModel;
 import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.service.ImageService;
 
-import javax.transaction.Transactional;
-
 @Service
 @Slf4j
-@Transactional
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
 

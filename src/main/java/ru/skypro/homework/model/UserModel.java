@@ -18,10 +18,12 @@ public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String firstName;
     private String lastName;
     private String phone;
     private String email;
+    private String password;
 
     @Enumerated(STRING)
     private Role role;
@@ -29,7 +31,6 @@ public class UserModel {
     @OneToOne
     @JoinColumn(name = "image_id")
     private ImageModel image;
-    private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AdModel> ads;

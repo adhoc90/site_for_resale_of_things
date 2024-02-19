@@ -20,8 +20,8 @@ public interface AdService {
      * Создает новое объявление.
      *
      * @param properties Объект CreateOrUpdateAd, содержащий данные для создания объявления.
-     * @param image    Файл изображения, связанный с объявлением.
-     * @param email    Email пользователя, создающего объявление.
+     * @param image      Файл изображения, связанный с объявлением.
+     * @param email      Email пользователя, создающего объявление.
      * @return Созданное объявление.
      */
     CreateOrUpdateAdDto createAd(CreateOrUpdateAdDto properties, MultipartFile image, String email);
@@ -48,7 +48,7 @@ public interface AdService {
      * Обновляет объявление.
      *
      * @param createOrUpdateAd Объект CreateOrUpdateAd, содержащий обновленные данные для объявления.
-     * @param id       Идентификатор обновляемого объявления.
+     * @param id               Идентификатор обновляемого объявления.
      * @return Обновленное объявление.
      */
     AdDto updateAd(CreateOrUpdateAdDto createOrUpdateAd, Integer id);

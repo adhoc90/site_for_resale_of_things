@@ -41,13 +41,11 @@ public class AdController {
     }
 
     /**
-     * Создание нового объявления.
-     *
-     * @param properties     Параметры нового объявления.
-     * @param image          Картинка объявления.
-     * @param authentication Данные авторизации пользователя.
-     * @return ResponseEntity содержит новое объявление или код статуса ответа при неудаче (
-     * HttpStatus.UNPROCESSABLE_ENTITY).
+     * Создание нового объявления
+     * @param properties передача характеристики, пользователем
+     * @param image передача картинки
+     * @param authentication userName пользователя
+     * @return статус ответа в зависимости от результата
      */
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Добавление объявления")

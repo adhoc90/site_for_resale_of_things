@@ -102,11 +102,12 @@ public class UserController {
      * @param authentication аутентификация
      * @return статус ответа
      */
-    @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Обновление аватара авторизованного пользователя")
-    public ResponseEntity<String> updateImage(@RequestBody(required = false) MultipartFile multipartFile,
+    public ResponseEntity<String> updateImage(@RequestParam(required = false) MultipartFile multipartFile,
                                               Authentication authentication) {
         log.info("Запрос на обновление аватара, авторизованного пользователя {} ", authentication.getName());
+        System.out.println(multipartFile);
         String newImage = userService.updateUserImage(multipartFile, authentication);
         if (newImage == null) {
             log.info("Ошибка обновления аватара {} ", authentication.getName());

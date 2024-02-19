@@ -6,7 +6,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.users.NewPasswordDto;
 import ru.skypro.homework.dto.users.UpdateUserDto;
@@ -31,7 +30,6 @@ public class UserServiceImpl implements UserService {
     private final ImageService imageService;
 
     @Override
-    @Transactional
     public boolean setPassword(NewPasswordDto passwordDto, Authentication authentication) {
         log.info("Запрос на изменение пароля");
         UserModel user;
@@ -62,7 +60,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UpdateUserDto updateUserInfo(UpdateUserDto updateUserDto, Authentication authentication) {
         log.info("Запрос на обновление информации об пользователе");
         UserModel user;
@@ -81,7 +78,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public String updateUserImage(MultipartFile multipartFile, Authentication authentication) {
         log.info("Запрос на обновление автара");
         UserModel user;
@@ -108,7 +104,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UserModel findUserByEmail(String email) {
         log.info("Находим и возвращаем пользователя по email {}", email);
         return userRepository.findUserByEmail(email).orElse(null);
