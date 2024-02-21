@@ -16,6 +16,8 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
 
+import java.util.Optional;
+
 import static ru.skypro.homework.mapper.UserMapper.SAMPLE;
 
 
@@ -96,16 +98,28 @@ public class UserServiceImpl implements UserService {
             fileStorageService.deleteFile(image.getPath());
         } else {
             log.info("аватарки у пользователя не было");
-            image = new ImageModel();
-            user.setImage(image);
         }
+        image = new ImageModel();
         image.setPath(newImage);
-        return imageService.save(image).getPath();
+        image = imageService.save(image);
+
+        user.setImage(image);
+        userRepository.save(user);
+        return image.getPath();
     }
+
 
     @Override
     public UserModel findUserByEmail(String email) {
         log.info("Находим и возвращаем пользователя по email {}", email);
         return userRepository.findUserByEmail(email).orElse(null);
+    }
+
+    @Override
+    public byte[] getImage(Integer id) {
+        return userRepository.findById(id)
+                .flatMap(user -> Optional.ofNullable(user.getImage()))
+                .map(image -> imageService.download(image.getPath()))
+                .orElse(null);
     }
 }

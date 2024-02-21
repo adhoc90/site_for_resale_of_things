@@ -62,7 +62,7 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration implements
                                 authorization
                                         .mvcMatchers(AUTH_WHITELIST)
                                         .permitAll()
-                                        .mvcMatchers(HttpMethod.GET, "/ads")
+                                        .mvcMatchers(HttpMethod.GET, "/ads", "/ads/*/image", "/users/*/image")
                                         .permitAll()
                                         .mvcMatchers("/ads/**", "/users/**")
                                         .authenticated())

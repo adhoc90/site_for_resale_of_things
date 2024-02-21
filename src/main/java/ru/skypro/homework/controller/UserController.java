@@ -104,7 +104,7 @@ public class UserController {
      */
     @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Обновление аватара авторизованного пользователя")
-    public ResponseEntity<String> updateImage(@RequestParam(required = false) MultipartFile multipartFile,
+    public ResponseEntity<String> updateImage(@RequestParam("image") MultipartFile multipartFile,
                                               Authentication authentication) {
         log.info("Запрос на обновление аватара, авторизованного пользователя {} ", authentication.getName());
         System.out.println(multipartFile);
@@ -114,5 +114,11 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(newImage);
+    }
+
+    @GetMapping(path = "/{id}/image")
+    public ResponseEntity<byte[]> getUserImage(@PathVariable Integer id) {
+        return ResponseEntity.ok()
+                .body(userService.getImage(id));
     }
 }

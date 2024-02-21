@@ -79,4 +79,12 @@ public interface AdService {
      */
     @Nullable
     String updateImage(Integer id, MultipartFile multipartFile);
+
+    /**
+     * Получение изображения по id
+     *
+     * @param id id объявления
+     * @return Массив байт
+     */
+    byte[] getImage(Integer id);
 }

@@ -10,4 +10,12 @@ public interface ImageService {
     ImageModel save(ImageModel image);
 
     byte[] getImageByPath(String path);
+
+    /**
+     * Скачивание изображения
+     *
+     * @param imagePath Путь к изображению
+     * @return Массив байт
+     */
+    byte[] download(String imagePath);
 }

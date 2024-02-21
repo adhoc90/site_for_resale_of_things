@@ -19,4 +19,12 @@ public interface UserService {
     String updateUserImage(MultipartFile multipartFile, Authentication authentication);
 
     UserModel findUserByEmail(String email);
+
+    /**
+     * Получение аватарки по id пользователя
+     *
+     * @param id id пользователя
+     * @return Массив байт
+     */
+    byte[] getImage(Integer id);
 }
