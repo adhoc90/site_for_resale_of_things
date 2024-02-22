@@ -41,13 +41,11 @@ public class AdController {
     }
 
     /**
-     * Создание нового объявления.
-     *
-     * @param properties     Параметры нового объявления.
-     * @param image          Картинка объявления.
-     * @param authentication Данные авторизации пользователя.
-     * @return ResponseEntity содержит новое объявление или код статуса ответа при неудаче (
-     * HttpStatus.UNPROCESSABLE_ENTITY).
+     * Создание нового объявления
+     * @param properties передача характеристики, пользователем
+     * @param image передача картинки
+     * @param authentication userName пользователя
+     * @return статус ответа в зависимости от результата
      */
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Добавление объявления")
@@ -130,8 +128,8 @@ public class AdController {
      *
      * @param id    Идентификатор объявления, к которому относится картинка.
      * @param image Новая картинка объявления.
-     * @return ResponseEntity содержит новую картинку объявления или код статуса ответа при неудаче (
-     * HttpStatus.NOT_FOUND).
+     * @return ResponseEntity содержит новую картинку объявления или код статуса ответа при неудаче
+     * (HttpStatus.NOT_FOUND).
      */
     @PatchMapping(value = "/{id}/image", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_OCTET_STREAM_VALUE)
     @PreAuthorize(value = "hasRole('ADMIN') or @adServiceImpl.isAuthorAd(authentication.getName(), #id)")

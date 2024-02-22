@@ -23,15 +23,6 @@ public class SecurityDetailsService implements UserDetailsService {
 
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        return User.builder()
-//                .password(userRepository.findUserByEmail(email).get().getPassword())
-//                .username(userRepository.findUserByEmail(email).get().getEmail())
-//                .roles(userRepository.findUserByEmail(email).get().getRole().name())
-//                .build();
-
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         log.info("Получаем пользователя из базы по его {}", email);

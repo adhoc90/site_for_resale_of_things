@@ -18,6 +18,7 @@ import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -178,5 +179,13 @@ public class AdServiceImpl implements AdService {
         AdModel ad = adRepository.findById(adPk).orElse(null);
         log.info("Выполняем проверку и возвращаем boolean значение");
         return user != null && ad != null && ad.getUser().getId().equals(user.getId());
+    }
+
+    @Override
+    public byte[] getImage(Integer id) {
+        return adRepository.findById(id)
+                .flatMap(ad -> Optional.ofNullable(ad.getImage()))
+                .map(image -> imageService.download(image.getPath()))
+                .orElse(null);
     }
 }

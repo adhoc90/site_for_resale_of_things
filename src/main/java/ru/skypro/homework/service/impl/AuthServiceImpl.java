@@ -2,9 +2,7 @@ package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.users.RegisterDto;
@@ -45,10 +43,6 @@ public class AuthServiceImpl implements AuthService {
             log.info("Такой пользователь существует");
             return false;
         }
-//        try {
-//            securityDetailsService.loadUserByUsername(register.getUsername());
-//        } catch (UsernameNotFoundException e) {
-
         UserModel user = UserMapper.SAMPLE.toModelUser(register);
         user.setPassword(encoder.encode(register.getPassword()));
         userRepository.save(user);

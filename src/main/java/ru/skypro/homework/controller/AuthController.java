@@ -23,6 +23,12 @@ public class AuthController {
 
     private final AuthService authService;
 
+    /**
+     * Обрабатывает запрос на вход пользователя в систему
+     *
+     * @param login данные пользователя для входа
+     * @return статус ответа в зависимости от результата авторизации
+     */
     @PostMapping("/login")
     @Operation(summary = "Авторизация")
     public ResponseEntity<?> login(@RequestBody(required = false) LoginDto login) {
@@ -36,6 +42,12 @@ public class AuthController {
         }
     }
 
+    /**
+     * Обрабатывает запрос регистрация данных
+     *
+     * @param register данные нового пользователя
+     * @return статус ответа в зависимости от результата регистрации
+     */
     @PostMapping("/register")
     @Operation(summary = "Регистрация")
     public ResponseEntity<?> register(@RequestBody(required = false) RegisterDto register) {

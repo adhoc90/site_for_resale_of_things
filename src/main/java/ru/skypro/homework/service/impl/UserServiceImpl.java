@@ -6,7 +6,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.users.NewPasswordDto;
 import ru.skypro.homework.dto.users.UpdateUserDto;
@@ -16,6 +15,8 @@ import ru.skypro.homework.model.UserModel;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
+
+import java.util.Optional;
 
 import static ru.skypro.homework.mapper.UserMapper.SAMPLE;
 
@@ -31,7 +32,6 @@ public class UserServiceImpl implements UserService {
     private final ImageService imageService;
 
     @Override
-    @Transactional
     public boolean setPassword(NewPasswordDto passwordDto, Authentication authentication) {
         log.info("Запрос на изменение пароля");
         UserModel user;
@@ -62,7 +62,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UpdateUserDto updateUserInfo(UpdateUserDto updateUserDto, Authentication authentication) {
         log.info("Запрос на обновление информации об пользователе");
         UserModel user;
@@ -81,7 +80,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public String updateUserImage(MultipartFile multipartFile, Authentication authentication) {
         log.info("Запрос на обновление автара");
         UserModel user;
@@ -100,17 +98,28 @@ public class UserServiceImpl implements UserService {
             fileStorageService.deleteFile(image.getPath());
         } else {
             log.info("аватарки у пользователя не было");
-            image = new ImageModel();
-            user.setImage(image);
         }
+        image = new ImageModel();
         image.setPath(newImage);
-        return imageService.save(image).getPath();
+        image = imageService.save(image);
+
+        user.setImage(image);
+        userRepository.save(user);
+        return image.getPath();
     }
 
+
     @Override
-    @Transactional
     public UserModel findUserByEmail(String email) {
         log.info("Находим и возвращаем пользователя по email {}", email);
         return userRepository.findUserByEmail(email).orElse(null);
+    }
+
+    @Override
+    public byte[] getImage(Integer id) {
+        return userRepository.findById(id)
+                .flatMap(user -> Optional.ofNullable(user.getImage()))
+                .map(image -> imageService.download(image.getPath()))
+                .orElse(null);
     }
 }

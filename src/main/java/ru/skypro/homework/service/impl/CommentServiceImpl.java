@@ -3,7 +3,6 @@ package ru.skypro.homework.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.homework.dto.comments.CommentDto;
 import ru.skypro.homework.dto.comments.CommentsDto;
 import ru.skypro.homework.dto.comments.CreateOrUpdateCommentDto;
@@ -57,7 +56,6 @@ public class CommentServiceImpl implements CommentService {
      * @return Созданный комментарий или null, если объявление не найдено.
      */
     @Override
-    @Transactional
     public CommentDto createComment(CreateOrUpdateCommentDto text, Integer pk, String email) {
         log.info("Создаем комментарий пользователя {} и возвращаем объект DTO", email);
         AdModel ad = adService.findAdById(pk);
@@ -81,7 +79,6 @@ public class CommentServiceImpl implements CommentService {
      * @return true, если комментарий успешно удален, false в противном случае.
      */
     @Override
-    @Transactional
     public boolean deleteComment(Integer adId, Integer commentId) {
         log.info("Удаляем комментарий по id {} и возвращаем boolean значение", commentId);
         return Optional.ofNullable(adService.findAdById(adId))
@@ -102,7 +99,6 @@ public class CommentServiceImpl implements CommentService {
      * @return Обновленный комментарий или null, если комментарий не найден или не относится к указанному объявлению.
      */
     @Override
-    @Transactional
     public CommentDto updateComment(CreateOrUpdateCommentDto createOrUpdateComment, Integer adId, Integer commentId, String email) {
         log.info("Обновляем комментарий по id {} пользователя {} и возвращаем объект DTO", commentId, email);
         return commentRepository.findById(commentId)
