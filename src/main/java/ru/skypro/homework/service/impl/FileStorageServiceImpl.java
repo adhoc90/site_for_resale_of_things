@@ -63,10 +63,15 @@ public class FileStorageServiceImpl implements FileStorageService {
             String fileName = generateFileName(file);
             Path filePath = Paths.get(uploadDir, fileName);
             File targetFile = filePath.toFile();
+
+            if (!Files.exists(filePath.getFileName())) {
+                Files.createDirectories(filePath.getParent());
+            }
+
             try (FileOutputStream fos = new FileOutputStream(targetFile)) {
                 fos.write(file.getBytes());
             }
-            return Paths.get(fileName).toString().replace(File.separator, "/");
+            return "/" + uploadDir + "/" + Paths.get(fileName).toString().replace(File.separator, "/");
         } catch (IOException e) {
             throw new RuntimeException("Не получилось сохранить файл", e);
         }

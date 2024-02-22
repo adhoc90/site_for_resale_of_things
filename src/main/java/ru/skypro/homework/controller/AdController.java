@@ -142,10 +142,4 @@ public class AdController {
                 ResponseEntity.ok(newImage) :
                 ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
-
-    @GetMapping(value = "/{id}/image")
-    public ResponseEntity<byte[]> getAdImage(@PathVariable Integer id) {
-        return ResponseEntity.ok()
-                .body(adService.getImage(id));
-    }
 }

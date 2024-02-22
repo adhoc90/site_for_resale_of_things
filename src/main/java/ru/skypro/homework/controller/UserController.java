@@ -115,10 +115,4 @@ public class UserController {
         }
         return ResponseEntity.ok(newImage);
     }
-
-    @GetMapping(path = "/{id}/image")
-    public ResponseEntity<byte[]> getUserImage(@PathVariable Integer id) {
-        return ResponseEntity.ok()
-                .body(userService.getImage(id));
-    }
 }
